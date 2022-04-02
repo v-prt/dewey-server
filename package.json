@@ -1,0 +1,22 @@
+{
+  "name": "dewey",
+  "version": "1.0.0",
+  "description": "to do app",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/v-prt/dewey-server.git"
+  },
+  "keywords": [
+    "todo"
+  ],
+  "author": "Victoria Peart",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/v-prt/dewey-server/issues"
+  },
+  "homepage": "https://github.com/v-prt/dewey-server#readme"
+}
