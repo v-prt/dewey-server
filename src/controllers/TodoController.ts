@@ -1,36 +1,38 @@
 // we first need to import some types from express because we want to type the values explicitly
 import { Response, Request } from 'express'
-import { ITodo } from '../types/todo'
-import Todo from '../models/TodoModel'
+import { ITodo } from '../Interfaces'
+import { Todo } from '../Models'
 
-const getTodos = async (req: Request, res: Response): Promise<void> => {
+export const getTodos = async (req: Request, res: Response): Promise<void> => {
   try {
     const todos: ITodo[] = await Todo.find()
     res.status(200).json({ todos })
-  } catch (error) {
-    throw error
+  } catch (err) {
+    console.error(err)
   }
 }
 
-const addTodo = async (req: Request, res: Response): Promise<void> => {
+export const addTodo = async (req: Request, res: Response): Promise<void> => {
   try {
-    const body = req.body as Pick<ITodo, 'name' | 'description' | 'status'>
+    const body = req.body as Pick<ITodo, 'description' | 'status' | 'priority' | 'dueDate'>
     const todo: ITodo = new Todo({
-      name: body.name,
       description: body.description,
       status: body.status,
+      priority: body.priority,
+      dueDate: body.dueDate,
     })
 
     const newTodo: ITodo = await todo.save()
     const allTodos: ITodo[] = await Todo.find()
 
     res.status(201).json({ message: 'Todo added', todo: newTodo, todos: allTodos })
-  } catch (error) {
-    throw error
+  } catch (err) {
+    console.error(err)
+    res.status(400).json(err)
   }
 }
 
-const updateTodo = async (req: Request, res: Response): Promise<void> => {
+export const updateTodo = async (req: Request, res: Response): Promise<void> => {
   try {
     const {
       params: { id },
@@ -43,12 +45,13 @@ const updateTodo = async (req: Request, res: Response): Promise<void> => {
       todo: updateTodo,
       todos: allTodos,
     })
-  } catch (error) {
-    throw error
+  } catch (err) {
+    console.error(err)
+    res.status(400).json(err)
   }
 }
 
-const deleteTodo = async (req: Request, res: Response): Promise<void> => {
+export const deleteTodo = async (req: Request, res: Response): Promise<void> => {
   try {
     const deletedTodo: ITodo | null = await Todo.findByIdAndRemove(req.params.id)
     const allTodos: ITodo[] = await Todo.find()
@@ -57,9 +60,8 @@ const deleteTodo = async (req: Request, res: Response): Promise<void> => {
       todo: deletedTodo,
       todos: allTodos,
     })
-  } catch (error) {
-    throw error
+  } catch (err) {
+    console.error(err)
+    res.status(400).json(err)
   }
 }
-
-export { getTodos, addTodo, updateTodo, deleteTodo }

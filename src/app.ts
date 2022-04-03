@@ -4,7 +4,7 @@ import express, { Express } from 'express'
 // we use the mongoose package to connect to MongoDB by appending to the URL the credentials held on the nodemon.json file
 import mongoose from 'mongoose'
 import cors from 'cors'
-import todoRoutes from './routes/Routes'
+import routes from './Routes'
 require('dotenv').config()
 
 const app: Express = express()
@@ -15,7 +15,7 @@ const PORT: string | number = process.env.PORT || 4000
 app.use(express.json())
 app.use(express.urlencoded())
 app.use(cors())
-app.use(todoRoutes)
+app.use(routes)
 
 const uri: string = `${process.env.MONGO_URI}`
 
