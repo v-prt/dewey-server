@@ -4,7 +4,8 @@ import express, { Express } from 'express'
 // we use the mongoose package to connect to MongoDB by appending to the URL the credentials held on the nodemon.json file
 import mongoose from 'mongoose'
 import cors from 'cors'
-import todoRoutes from './routes'
+import todoRoutes from './routes/Routes'
+require('dotenv').config()
 
 const app: Express = express()
 
@@ -16,7 +17,7 @@ app.use(express.urlencoded())
 app.use(cors())
 app.use(todoRoutes)
 
-const uri: string = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster.gfccu.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`
+const uri: string = `${process.env.MONGO_URI}`
 
 mongoose
   .connect(uri)

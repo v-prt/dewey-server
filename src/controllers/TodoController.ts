@@ -1,7 +1,7 @@
 // we first need to import some types from express because we want to type the values explicitly
 import { Response, Request } from 'express'
-import { ITodo } from './../../types/todo'
-import Todo from '../../models/todo'
+import { ITodo } from '../types/todo'
+import Todo from '../models/TodoModel'
 
 const getTodos = async (req: Request, res: Response): Promise<void> => {
   try {
