@@ -1,12 +1,13 @@
 import { Router } from 'express'
-import { getUsers, createUser } from './controllers/UserController'
+import { getUser, createUser, loginUser } from './controllers/UserController'
 import { getTodos, addTodo, updateTodo, deleteTodo } from './controllers/TodoController'
 
 const router: Router = Router()
 
 // users
-router.get('/users', getUsers)
+router.get('/users/:id', getUser)
 router.post('/users', createUser)
+router.post('/login', loginUser)
 
 // todos
 router.get('/todos', getTodos)
