@@ -6,21 +6,26 @@ const ObjectId = Schema.Types.ObjectId
 
 const todoSchema: Schema = new Schema(
   {
+    userId: {
+      type: ObjectId,
+      required: true,
+    },
+    listId: {
+      type: ObjectId,
+      required: true,
+    },
     description: {
       type: String,
       required: true,
     },
-
     status: {
       type: Boolean,
       required: true,
     },
-
     priority: {
       type: Number,
       required: true,
     },
-
     dueDate: {
       type: Date,
       required: true,
@@ -39,7 +44,6 @@ const listSchema: Schema = new Schema({
     type: String,
     required: true,
   },
-  tasks: [todoSchema],
 })
 
 const userSchema: Schema = new Schema({
@@ -55,7 +59,6 @@ const userSchema: Schema = new Schema({
     type: String,
     required: true,
   },
-  lists: [listSchema],
 })
 
 export const Todo = model<ITodo>('Todo', todoSchema)

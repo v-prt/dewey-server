@@ -5,27 +5,31 @@ import { Todo } from '../Models'
 
 export const getTodos = async (req: Request, res: Response): Promise<void> => {
   try {
-    const todos: ITodo[] = await Todo.find()
+    // TODO: test
+    const todos: ITodo[] = await Todo.find({ userId: req.params.id, listId: req.params.listId })
     res.status(200).json({ todos })
   } catch (err) {
     console.error(err)
+    res.status(400).json(err)
   }
 }
 
 export const addTodo = async (req: Request, res: Response): Promise<void> => {
   try {
-    const body = req.body as Pick<ITodo, 'description' | 'status' | 'priority' | 'dueDate'>
+    const body = req.body as Pick<
+      ITodo,
+      'userId' | 'listId' | 'description' | 'status' | 'priority' | 'dueDate'
+    >
     const todo: ITodo = new Todo({
+      userId: body.userId,
+      listId: body.listId,
       description: body.description,
       status: body.status,
       priority: body.priority,
       dueDate: body.dueDate,
     })
-
     const newTodo: ITodo = await todo.save()
-    const allTodos: ITodo[] = await Todo.find()
-
-    res.status(201).json({ message: 'Todo added', todo: newTodo, todos: allTodos })
+    res.status(201).json({ message: 'Todo added', todo: newTodo })
   } catch (err) {
     console.error(err)
     res.status(400).json(err)
@@ -39,11 +43,9 @@ export const updateTodo = async (req: Request, res: Response): Promise<void> => 
       body,
     } = req
     const updateTodo: ITodo | null = await Todo.findByIdAndUpdate({ _id: id }, body)
-    const allTodos: ITodo[] = await Todo.find()
     res.status(200).json({
       message: 'Todo updated',
       todo: updateTodo,
-      todos: allTodos,
     })
   } catch (err) {
     console.error(err)
@@ -54,11 +56,9 @@ export const updateTodo = async (req: Request, res: Response): Promise<void> => 
 export const deleteTodo = async (req: Request, res: Response): Promise<void> => {
   try {
     const deletedTodo: ITodo | null = await Todo.findByIdAndRemove(req.params.id)
-    const allTodos: ITodo[] = await Todo.find()
     res.status(200).json({
       message: 'Todo deleted',
       todo: deletedTodo,
-      todos: allTodos,
     })
   } catch (err) {
     console.error(err)
